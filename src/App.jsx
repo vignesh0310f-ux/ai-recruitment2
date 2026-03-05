@@ -15,7 +15,7 @@ async function ai(system, user) {
   });
   if (!res.ok) throw new Error(`API ${res.status}`);
   const d = await res.json();
-  if (d.error) throw new Error(d.error.message);
+  if (d.error) throw new Error(JSON.stringify(d.error));
   const txt = d.choices?.[0]?.message?.content||"";
   return JSON.parse(txt.replace(/```json\n?|\n?```/g,"").trim());
 }
