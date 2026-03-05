@@ -47,7 +47,7 @@ function MatrixRain() {
 }
 
 export default function App() {
-  const [view, setView] = useState("hr-login"); // hr-login | hr-dash | candidate | exam-intro | exam | scoring | done
+  const [view, setView] = useState("candidate"); // hr-login | hr-dash | candidate | exam-intro | exam | scoring | done
   const [hrPass, setHrPass] = useState("");
   const [hrErr, setHrErr] = useState("");
   const [isHR, setIsHR] = useState(false);
