@@ -10,12 +10,12 @@ const LINK = typeof window !== "undefined" ? window.location.href : "";
 
 async function ai(system, user) {
   const res = await fetch("https://api.groq.com/openai/v1/chat/completions", {
-  method:"POST", headers:{"Content-Type":"application/json", "Authorization":`Bearer ${process.env.REACT_APP_GROQ_API_KEY}`},
-    body:JSON.stringify({ model:"llama3-8b-8192", max_tokens:2000, messages:[{role:"system",content:system},{role:"user",content:user}]})
+    method:"POST", headers:{"Content-Type":"application/json", "Authorization":`Bearer ${process.env.REACT_APP_GROQ_API_KEY}`},
+    body:JSON.stringify({ model:"llama3-8b-8192", max_tokens:2000, messages:[{role:"system",content:system},{role:"user",content:user}] })
   });
-  if (!res.ok) throw new Error(`API ${res.status}`);
+  if (!res.ok) { const e = await res.json(); throw new Error(`API ${res.status}: ${JSON.stringify(e)}`); }
   const d = await res.json();
-  if (d.error) throw new Error(JSON.stringify(d.error));
+  if (d.error) throw new Error(d.error.message);
   const txt = d.choices?.[0]?.message?.content||"";
   return JSON.parse(txt.replace(/```json\n?|\n?```/g,"").trim());
 }
@@ -169,7 +169,7 @@ Return array: [{"q":"detailed scenario?"},...]`);
   }
 
   async function handleClearResults() {
-    if(!window.confirm("Clear all candidate results?")) return;
+    if(!confirm("Clear all candidate results?")) return;
     const keys = await dbList("result:");
     for(const k of keys) await dbDel(k);
     setCandidates([]);
