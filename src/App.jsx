@@ -11,7 +11,7 @@ const LINK = typeof window !== "undefined" ? window.location.href : "";
 async function ai(system, user) {
   const res = await fetch("https://api.groq.com/openai/v1/chat/completions", {
   method:"POST", headers:{"Content-Type":"application/json", "Authorization":`Bearer ${process.env.REACT_APP_GROQ_API_KEY}`},
-  body:JSON.stringify({ model:"llama3-8b-8192", max_tokens:2000, messages:[{role:"system",content:system},{role:"user",content:user}]
+    body:JSON.stringify({ model:"llama3-8b-8192", max_tokens:2000, messages:[{role:"system",content:system},{role:"user",content:user}]})
   });
   if (!res.ok) throw new Error(`API ${res.status}`);
   const d = await res.json();
